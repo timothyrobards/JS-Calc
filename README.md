@@ -1,2 +1,6 @@
 # JS-Calc
-A JavaScript iPhone Calculator 
+My attempt to clone the iPhone calculator using vanilla JavaScript.
+
+- Added key bindings
+
+- tbd: style modifications 
