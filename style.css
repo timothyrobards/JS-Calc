@@ -1,0 +1,152 @@
+body {
+  background: #000;
+}
+
+.container {
+  /* add for codepen? > height: 100%; */
+  left: 50%;
+  position: absolute;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  width: 340px;
+}
+
+.calculator {
+  align-content: flex-start;
+  align-items: flex-start;
+  background-color: #202020;
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  font-family: 'Roboto', sans-serif;
+  height: 512px;
+  justify-content: flex-start;
+  margin: 0 auto;
+  overflow: hidden;
+  width: 340px;
+}
+
+.calculator button {
+  border: 0;
+  cursor: pointer;
+  display: block;
+  font-size: 32px;
+  font-weight: 300;
+  height: 85px;
+  line-height: 85px;
+  margin-left: 0;
+  padding: 0;
+  text-align: center;
+  width: 85px;
+  transition: opacity .2s ease-out;
+  font-family: 'Roboto', sans-serif;
+}
+
+.calculator button:hover{
+  opacity: .9;
+}
+
+.calculator button:active, .calculator button.active{
+  opacity: .8;
+}
+
+.calculator__display {
+  color: white;
+  flex-grow: 1;
+  font-size: 57px;
+  font-weight: 100;
+  height: 87px;
+  line-height: 87px;
+  padding-right: 10px;
+  text-align: right;
+}
+
+.calculator__display.blink {
+  
+}
+
+.blink {
+  animation: blinker .1s linear 1;
+}
+
+@keyframes blinker {  
+  50% { 
+    opacity: 0; 
+  }
+}
+.calculator__keyboard {
+  align-content: flex-start;
+  align-items: flex-start;
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  justify-content: flex-start;
+}
+
+.calculator__keyboard__numeric {
+  align-content: flex-start;
+  align-items: flex-start;
+  display: flex;
+  flex-basis: 75%;
+  flex-direction: row;
+  flex-wrap: wrap;
+  justify-content: flex-start;
+}
+
+button.calculator__keyboard__numeric__key {
+  background-color: #c7c7c7;
+  color: #424346;
+  outline: 1px solid #949599;
+}
+
+button.calculator__keyboard__numeric__key:nth-child(-n+3) {
+  background-color: #afb0b5;
+}
+
+.calculator__keyboard__operations {
+  flex-basis: 25%;
+}
+
+button.calculator__keyboard__operations__key {
+  background-color: #f98410; 
+  color: #fff6f9;
+  flex-grow: 1;
+  font-size: 45px;
+  outline: 1px solid #ca5200;
+  font-weight: 100;
+}
+
+.theme__standart button[value="."] {
+  order: 11;
+}
+.theme__standart button[value="0"] {
+  order: 10;
+  flex-grow: 2;
+}
+.theme__standart button[value="1"] {
+  order: 7;
+}
+.theme__standart button[value="2"] {
+  order: 8;
+}
+.theme__standart button[value="3"] {
+  order: 9;
+}
+.theme__standart button[value="4"] {
+  order: 4;
+}
+.theme__standart button[value="5"] {
+  order: 5;
+}
+.theme__standart button[value="6"] {
+  order: 6;
+}
+.theme__standart button[value="7"] {
+  order: 1;
+}
+.theme__standart button[value="8"] {
+  order: 2; 
+}
+.theme__standart button[value="9"] {
+  order: 3;
+}
