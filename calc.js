@@ -1,13 +1,19 @@
-var app = window.app || {};
+/* 
+    My attempt to clone an iPhone calculator
+*/
 
-app.calculator = {
+
+let calculator = {
   
-  data: {
-    maxChars: 10,
-    storedResult: null,
-    currentValue: '0',
-    currentOperation: null,
-    mapKeys: {
+    // Initialise defaults
+    data: {
+      maxChars: 10,
+      storedResult: null,
+      currentValue: '0',
+      currentOperation: null,
+
+    // Map the keys
+    mapKeys: { 
       48 : { type: 'input', value:  '0' },
       49 : { type: 'input', value:  '1' },
       50 : { type: 'input', value:  '2' },
@@ -31,19 +37,23 @@ app.calculator = {
     },
   },
   
-  activateButtonWithKeyboard (keyCode){
-    const $button = document.querySelectorAll(`.calculator button[data-keycode="${keyCode}"]`)[0];
-    if ($button) {
-      $button.classList.toggle('active');
+  // Receive keyboard input (via data-keycode) & press the corresponding button
+
+  activateButtonWithKeypress (keyCode){
+    const chooseBtn = document.querySelectorAll(`.calculator button[data-keycode="${keyCode}"]`)[0];
+    if (chooseBtn) {
+      chooseBtn.classList.toggle('active');
       setTimeout(() => {
-        $button.classList.toggle('active');
+        chooseBtn.classList.toggle('active');
       }, 150);
     }
   },
   
+  // Select all buttons & map to corresponding type
+
   bindButtons () {
     const buttons = document.querySelectorAll('.calculator button');
-    const mapKeys = app.calculator.data.mapKeys;
+    const mapKeys = calculator.data.mapKeys;
     Array.from(buttons).forEach((button) => {
       button.addEventListener('click', (event) => {
         this.processUserInput(mapKeys[event.target.dataset.keycode])
@@ -53,31 +63,40 @@ app.calculator = {
   
   bindKeyboard () {
     document.addEventListener('keydown', (event) => {
-      const mapKeys = app.calculator.data.mapKeys;
+      const mapKeys = calculator.data.mapKeys;
       let keyCode = event.keyCode
+
+      // binds shift + 7 to 'divide by'
       if (keyCode === 55 && event.shiftKey) {
         keyCode = 47;
       }
       if (mapKeys[keyCode]) {
         this.processUserInput(mapKeys[keyCode])
-        this.activateButtonWithKeyboard(keyCode)
+        this.activateButtonWithKeypress(keyCode)
       }
     });
   },
   
+  // Blinks display content when numbers are pressed
+
   blinkDisplay () {
-    const $display = document.querySelector('.calculator__display')
-    $display.classList.toggle('blink')
+    const blinkDisplay = document.querySelector('.calculator-display')
+    blinkDisplay.classList.toggle('blink')
     setTimeout(() => {
-      $display.classList.toggle('blink')
+      blinkDisplay.classList.toggle('blink')
     }, 150);
   },
+
+  // Perform the calculation!
   
   calculate () {
+    // Initialise and convert input to number
     const oldValue = parseFloat(this.data.storedResult, 10)
     const operation = this.data.currentOperation
     const newValue = parseFloat(this.data.currentValue, 10)
     let resultValue = 0
+
+    // Performs calculation of numbers determined by operator value
     if (this.data.currentOperation === 'multiply') {
       resultValue = oldValue * newValue;
     }
@@ -100,6 +119,7 @@ app.calculator = {
     this.updateDisplay();
   },
   
+  // Resets defaults and clears display for 'C' button
   clearAll () {
     this.data.currentOperation = null;
     this.data.storedResult = null;
@@ -107,11 +127,13 @@ app.calculator = {
     this.updateDisplay();
   },
   
+  // Resets current value
   clearCurrentValue () {
     this.data.currentValue = '0';
     this.updateDisplay();
   },
   
+   // Removes last entered number if backspaced
   deleteNumber () {
     const newValue = this.data.currentValue.slice(0, -1);
     if (newValue === '') {
@@ -123,6 +145,8 @@ app.calculator = {
     }
   },
   
+  // Receives user input type and launches corresponding function
+
   processUserInput (userInput) {
     if (userInput.type === 'input') {
       this.setNumber(userInput.value)
@@ -144,13 +168,15 @@ app.calculator = {
     }
   },
   
+  // Blinks display as required to prompt user
+
   setNumber (newNumber) {
     let currentValue = this.data.currentValue;
     if (newNumber === '.' && currentValue.includes('.')) {
       this.blinkDisplay();
       return;
     } 
-    if ( currentValue.length === this.data.maxChars) {
+    if (currentValue.length === this.data.maxChars) {
       this.blinkDisplay();
       return;
     }
@@ -166,6 +192,8 @@ app.calculator = {
     this.updateDisplay()
   },
   
+  // Selects operator for calculation
+
   setOperation (newOperation) {
     if (this.data.currentOperation !== null && this.data.storedResult !== null) {
       this.calculate()
@@ -175,25 +203,32 @@ app.calculator = {
     this.data.currentOperation = newOperation;
   },
   
+  // When "=" is pressed, perform calculation and update the display
+
   showResult () {
     if (this.data.storedResult !== null) {
       this.calculate()
       this.updateDisplay();
+
+      // if null "=" was pressed first
     } else {
       this.blinkDisplay();
     }
   },
   
+  // When toggle button is pressed, toggle negative '-'
   toggleNumber () {
     this.data.currentValue = (parseFloat(this.data.currentValue, 10) * -1) + '';
     this.updateDisplay();
   },
   
+  // Add current value to display class
   updateDisplay () {
-    document.querySelector('.calculator__display').innerHTML = this.data.currentValue
+    document.querySelector('.calculator-display').innerHTML = this.data.currentValue
   },
   
-  init () {
+  // Function to initialise display and bindings
+  start () {
     this.updateDisplay();
     this.bindKeyboard();
     this.bindButtons();
@@ -201,4 +236,5 @@ app.calculator = {
     
 }
 
-app.calculator.init()
+// Start the app
+calculator.start()
